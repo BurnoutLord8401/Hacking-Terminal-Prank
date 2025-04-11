@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>H4CK3R 7ERMIN4L</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      height: 100vh;
+      background: black;
+      color: #0f0;
+      font-family: 'Share Tech Mono', monospace;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1rem;
+      overflow: hidden;
+      cursor: crosshair;
+    }
+    #terminal {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      line-height: 1.5;
+    }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="matrix"></canvas>
+  <div id="terminal"></div>
+
+  <script>
+    (function () {
+      const canvasElement = document.getElementById('matrix');
+      const context = canvasElement.getContext('2d');
+
+      canvasElement.height = window.innerHeight;
+      canvasElement.width = window.innerWidth;
+
+      const characters = "01abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+      const fontSize = 14;
+      const columns = canvasElement.width / fontSize;
+      const drops = Array.from({ length: columns }).fill(1);
+
+      function drawMatrix() {
+        context.fillStyle = "rgba(0, 0, 0, 0.05)";
+        context.fillRect(0, 0, canvasElement.width, canvasElement.height);
+
+        context.fillStyle = "#0F0";
+        context.font = `${fontSize}px 'Share Tech Mono', monospace`;
+
+        for (let i = 0; i < drops.length; i++) {
+          const text = characters[Math.floor(Math.random() * characters.length)];
+          context.fillText(text, i * fontSize, drops[i] * fontSize);
+
+          if (drops[i] * fontSize > canvasElement.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+
+          drops[i]++;
+        }
+      }
+
+      setInterval(drawMatrix, 50);
+    })();
+
+    const terminal = document.getElementById('terminal');
+    const hackerLines = [
+      'Connecting to mainframe...',
+      'Bypassing security...',
+      'Access granted. Listing files...',
+      '>> root@hacker:~$',
+      'Scanning network...',
+      'Downloading data packet [#####     ] 67%',
+      'Injecting script...',
+      'Running exploit...',
+      'Firewall bypassed!',
+      'Exporting logs...',
+      'Encrypting tunnel connection...'
+    ];
+
+    document.addEventListener('keydown', () => {
+      const line = hackerLines[Math.floor(Math.random() * hackerLines.length)];
+      const p = document.createElement('div');
+      p.textContent = line;
+      terminal.appendChild(p);
+      terminal.scrollTop = terminal.scrollHeight;
+    });
+  </script>
+</body>
+</html>
